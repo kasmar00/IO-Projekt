@@ -3,6 +3,10 @@ package pl.put.poznan.transformer.logic.text.letter_case;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 
+
+/**
+ * Copitalize text
+ */
 public class CapitalizeText extends TextTransformer {
     public CapitalizeText(Text transformedText){
         super(transformedText);
@@ -14,6 +18,12 @@ public class CapitalizeText extends TextTransformer {
         return setCapitalize(transformedText);
     }
 
+    /**
+     * Capitalize given text
+     *
+     * @param transformedText holds the text
+     * @return capitalized text
+     */
     private String setCapitalize(Text transformedText){
         String words[] = transformedText.transform().split("\\s");
         String capitalizeText="";
