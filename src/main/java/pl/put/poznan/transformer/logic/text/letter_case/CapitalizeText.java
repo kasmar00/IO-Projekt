@@ -1,18 +1,21 @@
-package pl.put.poznan.transformer.logic;
+package pl.put.poznan.transformer.logic.text.letter_case;
 
-public class CapitalizeText extends TextTransformer{
+import pl.put.poznan.transformer.logic.text.Text;
+import pl.put.poznan.transformer.logic.text.TextTransformer;
+
+public class CapitalizeText extends TextTransformer {
     public CapitalizeText(Text transformedText){
         super(transformedText);
     }
 
     @Override
-    public String modify(){
-        transformedText.modify();
+    public String transform(){
+        transformedText.transform();
         return setCapitalize(transformedText);
     }
 
     private String setCapitalize(Text transformedText){
-        String words[] = transformedText.modify().split("\\s");
+        String words[] = transformedText.transform().split("\\s");
         String capitalizeText="";
         for (String w:words){
             String first=w.substring(0,1);
