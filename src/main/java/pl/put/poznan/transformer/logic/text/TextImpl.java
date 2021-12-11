@@ -5,7 +5,7 @@ package pl.put.poznan.transformer.logic.text;
  */
 public class TextImpl implements Text {
     String text;
-    TextImpl(String words)
+    public TextImpl(String words)
     {
         text = words;
     }

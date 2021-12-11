@@ -12,6 +12,8 @@ public class UpperText extends TextTransformer {
         super(text);
     }
 
+    public static String name = "upper";
+
     @Override
     public String transform(){
         return setUpper(text.transform());

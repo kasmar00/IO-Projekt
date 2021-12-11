@@ -12,6 +12,8 @@ public class CapitalizeText extends TextTransformer {
         super(text);
     }
 
+    public static String name = "capitalize";
+
     @Override
     public String transform(){
         return setCapitalize(text.transform());
