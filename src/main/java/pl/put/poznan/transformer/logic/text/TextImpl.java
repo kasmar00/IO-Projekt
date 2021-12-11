@@ -1,15 +1,13 @@
 package pl.put.poznan.transformer.logic.text;
 
-import pl.put.poznan.transformer.logic.text.Text;
-
 /**
  * Implements text to class
  */
 public class TextImpl implements Text {
-    String pom;
+    String outcome;
     TextImpl(String words)
     {
-        pom = words;
+        outcome = words;
     }
 
     /**
@@ -18,6 +16,6 @@ public class TextImpl implements Text {
      */
     @Override
     public String transform() {
-        return pom;
+        return outcome;
     }
 }

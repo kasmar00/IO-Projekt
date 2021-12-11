@@ -1,4 +1,4 @@
-package pl.put.poznan.transformer.logic.text.letter_case;
+package pl.put.poznan.transformer.logic.text.lettercase;
 
 
 import pl.put.poznan.transformer.logic.text.Text;
@@ -14,17 +14,17 @@ public class UpperText extends TextTransformer {
 
     @Override
     public String transform(){
-        transformedText.transform();
-        return setUpper(transformedText);
+        text.transform();
+        return setUpper(text);
     }
 
     /**
      * Upper given text
      *
-     * @param transformedText holds the text
+     * @param text holds the text
      * @return uppered text
      */
-    private String setUpper(Text transformedText){
-        return transformedText.transform().toUpperCase();
+    private String setUpper(Text text){
+        return text.transform().toUpperCase();
     }
 }

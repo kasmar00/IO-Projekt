@@ -3,15 +3,15 @@ package pl.put.poznan.transformer.logic.text;
 import pl.put.poznan.transformer.logic.text.Text;
 
 public class TextTransformer implements Text {
-    protected Text transformedText;
+    protected Text text;
 
     public TextTransformer(Text transformedText){
-        this.transformedText=transformedText;
+        this.text=transformedText;
     }
 
     @Override
     public String transform()
     {
-        return transformedText.transform();
+        return text.transform();
     }
 }

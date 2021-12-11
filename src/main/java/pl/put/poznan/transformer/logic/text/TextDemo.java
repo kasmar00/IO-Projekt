@@ -1,8 +1,8 @@
 package pl.put.poznan.transformer.logic.text;
 
-import pl.put.poznan.transformer.logic.text.letter_case.CapitalizeText;
-import pl.put.poznan.transformer.logic.text.letter_case.LowerText;
-import pl.put.poznan.transformer.logic.text.letter_case.UpperText;
+import pl.put.poznan.transformer.logic.text.lettercase.CapitalizeText;
+import pl.put.poznan.transformer.logic.text.lettercase.LowerText;
+import pl.put.poznan.transformer.logic.text.lettercase.UpperText;
 
 public class TextDemo {
     public static void main()

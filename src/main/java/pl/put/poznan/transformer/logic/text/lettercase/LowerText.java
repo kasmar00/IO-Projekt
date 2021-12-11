@@ -1,0 +1,28 @@
+package pl.put.poznan.transformer.logic.text.lettercase;
+
+import pl.put.poznan.transformer.logic.text.Text;
+import pl.put.poznan.transformer.logic.text.TextTransformer;
+
+/**
+ * Lower given text
+ */
+public class LowerText extends TextTransformer {
+    public LowerText(Text text){
+        super(text);
+    }
+
+    @Override
+    public String transform(){
+        text.transform();
+        return setLower(text);
+    }
+    /**
+     * Lower given text
+     *
+     * @param text holds the text
+     * @return lowered text
+     */
+    private String setLower(Text text){
+        return text.transform().toLowerCase();
+    }
+}
