@@ -8,27 +8,15 @@ import java.util.Arrays;
 
 
 @RestController
-@RequestMapping("/{text}")
+@RequestMapping("/transform")
 public class TextTransformerController {
 
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public String get(@PathVariable String text,
-                              @RequestParam(value="transforms", defaultValue="upper,escape") String[] transforms) {
-
-        // log the parameters
-        logger.debug(text);
-        logger.debug(Arrays.toString(transforms));
-
-        // perform the transformation, you should run your logic here, below is just a silly example
-        TextTransformer transformer = new TextTransformer(transforms);
-        return transformer.transform(text);
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public String post(@PathVariable String text,
-                      @RequestBody String[] transforms) {
+    public Response post(@RequestBody Request inputPayload) {
+        String text = inputPayload.getText();
+        String[] transforms = inputPayload.getTransformations();
 
         // log the parameters
         logger.debug(text);
@@ -36,11 +24,7 @@ public class TextTransformerController {
 
         // perform the transformation, you should run your logic here, below is just a silly example
         TextTransformer transformer = new TextTransformer(transforms);
-        return transformer.transform(text);
+
+        return new Response(transformer.transform(text));
     }
-
-
-
 }
-
-

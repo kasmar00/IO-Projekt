@@ -2,18 +2,18 @@ package pl.put.poznan.transformer.rest;
 
 public class Request {
     private final String text;
-    private final String[] transofrmations;
+    private final String[] transformations;
 
-    public Request(String text, String[] transofrmations) {
+    public Request(String text, String[] transformations) {
         this.text = text;
-        this.transofrmations = transofrmations;
+        this.transformations = transformations;
     }
 
     public String getText() {
         return text;
     }
 
-    public String[] getTransofrmations() {
-        return transofrmations;
+    public String[] getTransformations() {
+        return transformations;
     }
 }
