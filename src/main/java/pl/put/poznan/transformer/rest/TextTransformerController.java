@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class TextTransformerController {
 
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
-    private TextTransformerService textTransformerService;
+    private final TextTransformerService textTransformerService;
 
     public TextTransformerController(TextTransformerService textTransformerService) {
         this.textTransformerService = textTransformerService;

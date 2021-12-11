@@ -5,7 +5,7 @@ import pl.put.poznan.transformer.logic.text.TextTransformer;
 
 
 /**
- * Copitalize text
+ * Capitalize text
  */
 public class CapitalizeText extends TextTransformer {
     public CapitalizeText(Text text){
