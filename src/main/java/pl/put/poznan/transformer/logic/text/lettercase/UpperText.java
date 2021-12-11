@@ -8,14 +8,13 @@ import pl.put.poznan.transformer.logic.text.TextTransformer;
  * Upper given text
  */
 public class UpperText extends TextTransformer {
-    public UpperText(Text transformedText){
-        super(transformedText);
+    public UpperText(Text text){
+        super(text);
     }
 
     @Override
     public String transform(){
-        text.transform();
-        return setUpper(text);
+        return setUpper(text.transform());
     }
 
     /**
@@ -24,7 +23,7 @@ public class UpperText extends TextTransformer {
      * @param text holds the text
      * @return uppered text
      */
-    private String setUpper(Text text){
-        return text.transform().toUpperCase();
+    private String setUpper(String text){
+        return text.toUpperCase();
     }
 }

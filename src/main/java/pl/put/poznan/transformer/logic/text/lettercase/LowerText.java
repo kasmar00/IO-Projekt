@@ -13,8 +13,7 @@ public class LowerText extends TextTransformer {
 
     @Override
     public String transform(){
-        text.transform();
-        return setLower(text);
+        return setLower(text.transform());
     }
     /**
      * Lower given text
@@ -22,7 +21,7 @@ public class LowerText extends TextTransformer {
      * @param text holds the text
      * @return lowered text
      */
-    private String setLower(Text text){
-        return text.transform().toLowerCase();
+    private String setLower(String text){
+        return text.toLowerCase();
     }
 }

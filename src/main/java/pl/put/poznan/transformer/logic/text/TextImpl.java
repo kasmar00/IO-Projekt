@@ -4,18 +4,18 @@ package pl.put.poznan.transformer.logic.text;
  * Implements text to class
  */
 public class TextImpl implements Text {
-    String outcome;
+    String text;
     TextImpl(String words)
     {
-        outcome = words;
+        text = words;
     }
 
     /**
      * Return given text
-     * @return text
+     * @return outcome
      */
     @Override
     public String transform() {
-        return outcome;
+        return text;
     }
 }

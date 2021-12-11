@@ -14,8 +14,7 @@ public class CapitalizeText extends TextTransformer {
 
     @Override
     public String transform(){
-        text.transform();
-        return setCapitalize(text);
+        return setCapitalize(text.transform());
     }
 
     /**
@@ -24,8 +23,8 @@ public class CapitalizeText extends TextTransformer {
      * @param text holds the text
      * @return capitalized text
      */
-    private String setCapitalize(Text text){
-        String words[] = text.transform().split("\\s");
+    private String setCapitalize(String text){
+        String words[] = text.split("\\s");
         String capitalizeText="";
         for (String w:words){
             String first=w.substring(0,1);
