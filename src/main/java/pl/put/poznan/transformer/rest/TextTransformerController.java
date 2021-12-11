@@ -14,9 +14,9 @@ public class TextTransformerController {
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public TransformerRequest post(@RequestBody TransformerRequest inputPayload) {
-        String text = inputPayload.text;
-        String[] transforms = inputPayload.transforms;
+    public Response post(@RequestBody Request inputPayload) {
+        String text = inputPayload.getText();
+        String[] transforms = inputPayload.getTransofrmations();
 
         // log the parameters
         logger.debug(text);
@@ -24,6 +24,7 @@ public class TextTransformerController {
 
         // perform the transformation, you should run your logic here, below is just a silly example
         TextTransformer transformer = new TextTransformer(transforms);
-        return new TransformerRequest(transformer.transform(text), transforms);
+
+        return new Response(transformer.transform(text));
     }
 }
