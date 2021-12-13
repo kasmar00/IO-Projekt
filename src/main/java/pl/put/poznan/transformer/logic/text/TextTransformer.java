@@ -1,9 +1,12 @@
 package pl.put.poznan.transformer.logic.text;
 
-import pl.put.poznan.transformer.logic.text.Text;
-
 public class TextTransformer implements Text {
     protected Text text;
+
+    /**
+     * Transformation name
+     */
+    public static String name = "noop";
 
     public TextTransformer(Text transformedText){
         this.text=transformedText;
