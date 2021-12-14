@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
  */
 public class ToShortcut extends TextTransformer {
 
+    public static String name = "to shortcuts";
+
     private final String[][] pairs = {
             {"na przykład", "np."},
             {"i tym podobne", "itp."},
