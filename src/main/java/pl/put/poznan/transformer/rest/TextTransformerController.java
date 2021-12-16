@@ -4,6 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.transformer.logic.TextTransformerService;
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
+import pl.put.poznan.transformer.logic.exceptions.EmptyTextException;
+import pl.put.poznan.transformer.logic.exceptions.EmptyTransformationsException;
+
 
 import java.util.Arrays;
 
@@ -40,12 +44,18 @@ public class TextTransformerController {
      * @return Response with transformed text
      */
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public Response post(@RequestBody Request inputPayload) {
+    public Response post(@RequestBody Request inputPayload) throws DomainException {
         String text = inputPayload.getText();
         String[] transforms = inputPayload.getTransformations();
 
-        logger.debug(text);
-        logger.debug(Arrays.toString(transforms));
+        logger.debug("Received request with: \n" +
+                "Text: " + text + "\n" +
+                "Transformations: " + Arrays.toString(transforms));
+
+        if (text == null)
+            throw new EmptyTextException();
+        if (transforms == null)
+            throw new EmptyTransformationsException();
 
         String transformedText = textTransformerService.getTranformedText(text, transforms);
 
