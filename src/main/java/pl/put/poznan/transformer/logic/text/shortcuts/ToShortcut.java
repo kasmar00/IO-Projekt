@@ -13,22 +13,15 @@ public class ToShortcut extends TextTransformer {
     public static String name = "to shortcuts";
 
     private final String[][] pairs = {
-            {"na przykład", "np."},
-            {"i tym podobne", "itp."},
-            {"i tak dalej", "itd."},
-            {"et cetera", "etc."},
-            {"to znaczy", "tzn."},
-            {"tak zwan.", "tzw."},
-            {"to jest", "tj."},
-            {"między innymi", "m.in."},
-            {"na temat", "nt."},
-            {"jak wyżej", "jw."},
-            {"doktor habilitowany", "dr hab."},
-            {"doktor", "dr"},
-            {"profesor", "prof."},
-            {"magister inżynier", "mgr inż."},
-            {"magister", "mgr"},
-            {"inżynier", "inż."}
+            {"na przykład", "np.", "03"},
+            {"i tym podobne", "itp.", "026"},
+            {"i tak dalej", "itd.", "026"},
+            {"et cetera", "etc.", "013"},
+            {"to znaczy", "tzn.", "034"},
+            {"tak zwan.", "tzw.", "045"},
+            {"między innymi", "m.in.", "0.78"},
+            {"na temat", "nt.", "03"},
+            {"jak wyżej", "jw.", "04"}
     };
 
 
@@ -52,14 +45,26 @@ public class ToShortcut extends TextTransformer {
         String workingText = text;
         Pattern pattern;
         Matcher matcher;
+        String match, shortcut;
         for(int i = 0; i < pairs.length; i++) {
-            pattern = Pattern.compile(pairs[i][0]);
+            pattern = Pattern.compile(pairs[i][0], Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(workingText);
             shortenedText = "";
 
             int index = 0;
             while(matcher.find()) {
-                shortenedText += workingText.substring(index, matcher.start()) + pairs[i][1];
+                match = workingText.substring(matcher.start(), matcher.end());
+                shortcut = pairs[i][1];
+                for(int j = 0; j < shortcut.length() - 1; j++){
+                    if(shortcut.charAt(j) == '.') continue;
+                    else{
+                        int position = Character.getNumericValue(pairs[i][2].charAt(j));
+                        if(match.charAt(position) < 97){
+                            shortcut = shortcut.substring(0, j) + shortcut.substring(j, j + 1).toUpperCase() + shortcut.substring(j + 1);
+                        }
+                    }
+                }
+                shortenedText += workingText.substring(index, matcher.start()) + shortcut;
                 index = matcher.end();
 
                 // usuwanie podwójnych kropek
