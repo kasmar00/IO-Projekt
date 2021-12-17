@@ -5,12 +5,14 @@ import pl.put.poznan.transformer.logic.text.TextTransformer;
 
 
 /**
- * Copitalize text
+ * Capitalize text
  */
 public class CapitalizeText extends TextTransformer {
     public CapitalizeText(Text text){
         super(text);
     }
+
+    public static String name = "capitalize";
 
     @Override
     public String transform(){

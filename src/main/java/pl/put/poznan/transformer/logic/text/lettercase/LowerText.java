@@ -11,6 +11,8 @@ public class LowerText extends TextTransformer {
         super(text);
     }
 
+    public static String name = "lower";
+
     @Override
     public String transform(){
         return setLower(text.transform());
