@@ -16,6 +16,8 @@ public class InverseText extends TextTransformer {
         super(text);
     }
 
+    public static String name = "inverse";
+
     @Override
     public String transform(){
         return getInverse(text.transform());
