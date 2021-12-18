@@ -6,7 +6,6 @@ import org.json.simple.parser.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.put.poznan.transformer.logic.TextTransformerService;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 
@@ -21,6 +20,7 @@ import java.util.regex.Pattern;
  */
 public class NumberExpandText extends TextTransformer {
     private static final Logger logger = LoggerFactory.getLogger(NumberExpandText.class);
+    private static final String regex = "[+-]?([0-9]+\\.?[0-9]*|\\.[0-9]+)";
 
     public NumberExpandText(Text text){
         super(text);
@@ -34,11 +34,11 @@ public class NumberExpandText extends TextTransformer {
     }
 
     private String setNumberExpand(String text) {
-        ArrayList<String> matches = MatchPattern(text);
+        ArrayList<String> matches = matchPattern(text);
 
         try {
-            ArrayList<String> converted = ConvertNumberToText(matches);
-            return ReplaceNumbers(text, converted);
+            ArrayList<String> converted = convertNumberToText(matches);
+            return replaceNumbers(text, converted);
         } catch (IOException | ParseException e) {
             logger.warn("Can't expand number:", e);
             return text;
@@ -49,8 +49,7 @@ public class NumberExpandText extends TextTransformer {
      * Matches pattern in given text
      * @return all pattern matches in list
      */
-    public static ArrayList<String> MatchPattern(String text) {
-        String regex = "[+-]?([0-9]+\\.?[0-9]*|\\.[0-9]+)";
+    public static ArrayList<String> matchPattern(String text) {
         Pattern pattern = Pattern.compile(regex);
 
         Matcher matcher = pattern.matcher(text);
@@ -68,10 +67,10 @@ public class NumberExpandText extends TextTransformer {
      * @throws ParseException
      * @return list of numbers converted to text
      */
-    public static ArrayList<String> ConvertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
+    public static ArrayList<String> convertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
         ArrayList<String> converted = new ArrayList<>();
-        Object object = new JSONParser().parse(new FileReader("src/main/resources/NumberToText.json"));
-        JSONObject jo = (JSONObject) object;
+        JSONObject jsonObject = (JSONObject) new JSONParser().parse(
+                new FileReader("src/main/resources/NumberToText.json"));
 
         int lenbeforedot, lenafterdot;
         for (String match : matches) {
@@ -94,7 +93,7 @@ public class NumberExpandText extends TextTransformer {
                 number = match.charAt(place) - '0';
                 if (i == 1) {                                           // 0-9
                     if (number != 0) {                                      // 1-9
-                        numbers = (ArrayList<String>) jo.get("ones");
+                        numbers = (ArrayList<String>) jsonObject.get("ones");
                         result.append(numbers.get(number)).append(" ");
                     }
                     else if (lenbeforedot == 1) {                           // 0
@@ -104,29 +103,29 @@ public class NumberExpandText extends TextTransformer {
                 }
                 if (i == 2) {                                           // 10-99
                     if (number == 1) {                                      // 10-19
-                        numbers = (ArrayList<String>) jo.get("teens");
+                        numbers = (ArrayList<String>) jsonObject.get("teens");
                         number = match.charAt(place + 1) - '0';
                         result.append(numbers.get(number)).append(" ");
                         break;
                     }
                     else if (number != 0) {                                 // 20-99
-                        numbers = (ArrayList<String>) jo.get("tens");
+                        numbers = (ArrayList<String>) jsonObject.get("tens");
                         result.append(numbers.get(number)).append(" ");
                     }
                 }
                 if (i == 3) {                                           // 100-999
                     if (number != 0) {
-                        numbers = (ArrayList<String>) jo.get("hundreds");
+                        numbers = (ArrayList<String>) jsonObject.get("hundreds");
                         result.append(numbers.get(number)).append(" ");
                     }
                 }
-                if (i == 4) {                                           // 1000-19999
+                if (i == 4) {                                           // 1000-1999
                     if (number == 1) {
                         result.append("tysiąc ");
                     }
                 }
             }
-            converted.add(result.toString());
+            converted.add(result.toString().trim());
         }
         return converted;
     }
@@ -137,14 +136,23 @@ public class NumberExpandText extends TextTransformer {
      * @param converted list of numbers converted to text
      * @return text with converted numbers
      */
-    public static String ReplaceNumbers(String text, ArrayList<String> converted) {
-        String[] splited = text.split("[+-]?([0-9]+\\.?[0-9]*|\\.[0-9]+)");
+    public static String replaceNumbers(String text, ArrayList<String> converted) {
+        // Poprzednia wersja - pozostawiona jedynie dla porównania!
+//        String[] splited = text.split(regex);
+//
+//        int cuts = min(splited.length, converted.size());
+//        for (int i = 0; i < cuts; ++i) {
+//            splited[i] = splited[i].trim() + " " + converted.get(i);
+//        }
+//
+//        return String.join(" ", splited).trim();
 
-        for (int i = 0; i < splited.length; ++i) {
-            splited[i] = splited[i].trim();
-            splited[i] = splited[i] + " " + converted.get(i);
+        String replaced = text.replaceAll(regex, "\0");
+        for (int i = 0, j = 0; i < replaced.length(); ++i) {
+            if (replaced.charAt(i) == '\0') {
+                replaced = replaced.substring(0, i) + converted.get(j++) + replaced.substring(i+1);
+            }
         }
-
-        return String.join("", splited).trim();
+        return replaced;
     }
 }
