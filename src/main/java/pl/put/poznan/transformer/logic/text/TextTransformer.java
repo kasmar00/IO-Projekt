@@ -13,8 +13,7 @@ public class TextTransformer implements Text {
     }
 
     @Override
-    public String transform()
-    {
+    public String transform() {
         return text.transform();
     }
 }
