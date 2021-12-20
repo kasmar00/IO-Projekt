@@ -22,7 +22,7 @@ public class NumberExpandText extends TextTransformer {
     private static final Logger logger = LoggerFactory.getLogger(NumberExpandText.class);
     private static final String regex = "[+-]?([0-9]+\\.?[0-9]*|\\.[0-9]+)";
 
-    public NumberExpandText(Text text){
+    public NumberExpandText(Text text) {
         super(text);
     }
 
@@ -47,6 +47,8 @@ public class NumberExpandText extends TextTransformer {
 
     /**
      * Matches pattern in given text
+     *
+     * @param text given text
      * @return all pattern matches in list
      */
     public static ArrayList<String> matchPattern(String text) {
@@ -54,7 +56,7 @@ public class NumberExpandText extends TextTransformer {
 
         Matcher matcher = pattern.matcher(text);
         ArrayList<String> matches = new ArrayList<>();
-        while(matcher.find()) {
+        while (matcher.find()) {
             matches.add(matcher.group());
         }
         return matches;
@@ -62,10 +64,11 @@ public class NumberExpandText extends TextTransformer {
 
     /**
      * Converts numbers to text
+     *
      * @param matches is a given list with numbers as strings
-     * @throws IOException
-     * @throws ParseException
      * @return list of numbers converted to text
+     * @throws IOException    on problems with opening a file
+     * @throws ParseException on problems parsing a JSON
      */
     public static ArrayList<String> convertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
         ArrayList<String> converted = new ArrayList<>();
@@ -95,8 +98,7 @@ public class NumberExpandText extends TextTransformer {
                     if (number != 0) {                                      // 1-9
                         numbers = (ArrayList<String>) jsonObject.get("ones");
                         result.append(numbers.get(number)).append(" ");
-                    }
-                    else if (lenbeforedot == 1) {                           // 0
+                    } else if (lenbeforedot == 1) {                           // 0
                         result.append("zero ");
                         break;
                     }
@@ -107,8 +109,7 @@ public class NumberExpandText extends TextTransformer {
                         number = match.charAt(place + 1) - '0';
                         result.append(numbers.get(number)).append(" ");
                         break;
-                    }
-                    else if (number != 0) {                                 // 20-99
+                    } else if (number != 0) {                                 // 20-99
                         numbers = (ArrayList<String>) jsonObject.get("tens");
                         result.append(numbers.get(number)).append(" ");
                     }
@@ -132,25 +133,16 @@ public class NumberExpandText extends TextTransformer {
 
     /**
      * Replace numbers to strings
-     * @param text given text
+     *
+     * @param text      given text
      * @param converted list of numbers converted to text
      * @return text with converted numbers
      */
     public static String replaceNumbers(String text, ArrayList<String> converted) {
-        // Poprzednia wersja - pozostawiona jedynie dla porównania!
-//        String[] splited = text.split(regex);
-//
-//        int cuts = min(splited.length, converted.size());
-//        for (int i = 0; i < cuts; ++i) {
-//            splited[i] = splited[i].trim() + " " + converted.get(i);
-//        }
-//
-//        return String.join(" ", splited).trim();
-
         String replaced = text.replaceAll(regex, "\0");
         for (int i = 0, j = 0; i < replaced.length(); ++i) {
             if (replaced.charAt(i) == '\0') {
-                replaced = replaced.substring(0, i) + converted.get(j++) + replaced.substring(i+1);
+                replaced = replaced.substring(0, i) + converted.get(j++) + replaced.substring(i + 1);
             }
         }
         return replaced;
