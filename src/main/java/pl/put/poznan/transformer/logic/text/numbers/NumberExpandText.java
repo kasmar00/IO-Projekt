@@ -12,6 +12,9 @@ import pl.put.poznan.transformer.logic.text.TextTransformer;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,9 +129,78 @@ public class NumberExpandText extends TextTransformer {
                     }
                 }
             }
-            converted.add(result.toString().trim());
+            String convertedNumber = result.toString().trim();
+            if (lenafterdot > 0) {
+                String decimalPart = convertDecimalPart(match, jsonObject);
+                convertedNumber += " i " + decimalPart.trim();
+            }
+            converted.add(convertedNumber);
         }
         return converted;
+    }
+
+
+    private static int extensionSelector(int value) {
+        if (value == 1) {
+            return 0;
+        } else if (value <= 4) {
+            return 1;
+        } else if (value <= 20) {
+            return 2;
+        } else if (Arrays.asList(2, 3, 4).contains(value % 10)) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    private static String convertDecimalPart(String decimalPartInput, Map<String, List<String>> dictionary) {
+        int splitIndex = decimalPartInput.indexOf(".");
+        int decimalPart = (int) (Double.parseDouble(decimalPartInput.substring(splitIndex)) * 100);
+
+        if (decimalPart == 0) {
+            return "";
+        } else if (decimalPart % 10 == 0) {
+            int value = decimalPart / 10;
+            String name = dictionary.get("places").get(value);
+            String extension = dictionary.get("decimal").get(extensionSelector(value));
+            return name + " " + extension;
+        } else {
+            String name = getHundredthPart(decimalPart, dictionary);
+            String extension = dictionary.get("hundredth").get(extensionSelector(decimalPart));
+            return name + " " + extension;
+        }
+    }
+
+    private static String getHundredthPart(int value, Map<String, List<String>> dictionary) {
+//        todo: generalize this function
+        List<String> expandedText = new ArrayList<>();
+
+        {
+            int i = value / 10;
+            if (i >= 2) {
+                expandedText.add(dictionary.get("tens").get(i));
+                value -= i * 10;
+            }
+        }
+
+        {
+            int i = value - 10;
+            if (i >= 2) {
+                expandedText.add(dictionary.get("teens").get(i));
+                value -= i + 10;
+            }
+        }
+
+        {
+            int i = value;
+            if (i >= 1) {
+                expandedText.add(dictionary.get("places").get(i));
+                value -= i;
+            }
+        }
+
+        return String.join(" ", expandedText);
     }
 
     /**
