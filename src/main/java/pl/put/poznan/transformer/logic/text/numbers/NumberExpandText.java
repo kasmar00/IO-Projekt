@@ -1,6 +1,5 @@
 package pl.put.poznan.transformer.logic.text.numbers;
 
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -9,14 +8,18 @@ import org.slf4j.LoggerFactory;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Expand numbers to text
@@ -40,7 +43,7 @@ public class NumberExpandText extends TextTransformer {
         ArrayList<String> matches = matchPattern(text);
 
         try {
-            ArrayList<String> converted = convertNumberToText(matches);
+            ArrayList<String> converted = this.convertNumberToText(matches);
             return replaceNumbers(text, converted);
         } catch (IOException | ParseException e) {
             logger.warn("Can't expand number:", e);
@@ -65,6 +68,17 @@ public class NumberExpandText extends TextTransformer {
         return matches;
     }
 
+    private Map<String, List<String>> getNameDictionary() throws ParseException {
+        InputStream inputStream = this.getClass().getResourceAsStream("/NumberToText.json");
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Stream<String> lines = bufferedReader.lines();
+
+        return (Map<String, List<String>>) new JSONParser().parse(
+                lines.collect(Collectors.joining(""))
+        );
+    }
+
     /**
      * Converts numbers to text
      *
@@ -73,10 +87,9 @@ public class NumberExpandText extends TextTransformer {
      * @throws IOException    on problems with opening a file
      * @throws ParseException on problems parsing a JSON
      */
-    public static ArrayList<String> convertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
+    public ArrayList<String> convertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
         ArrayList<String> converted = new ArrayList<>();
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(
-                new FileReader("src/main/resources/NumberToText.json"));
+        Map<String, List<String>> jsonObject = getNameDictionary();
 
         int lenbeforedot, lenafterdot;
         for (String match : matches) {
