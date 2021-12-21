@@ -1,29 +1,40 @@
 package pl.put.poznan.transformer.logic.text.lettercase;
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 
 
 /**
- * Capitalize text
+ * Capitalize text class
+ * <p>
+ * Capitalizes text
  */
 public class CapitalizeText extends TextTransformer {
     public CapitalizeText(Text text){
         super(text);
     }
 
+    /**
+     * Keyword for capitalize text transformation
+     */
     public static String name = "capitalize";
 
+    /**
+     * Makes capitalize to text transformation
+     *
+     * @return Text capitalized
+     */
     @Override
-    public String transform(){
+    public String transform() throws DomainException {
         return setCapitalize(text.transform());
     }
 
     /**
      * Capitalize given text
      *
-     * @param text holds the text
-     * @return capitalized text
+     * @param text Holds the text
+     * @return Capitalized text
      */
     private String setCapitalize(String text){
         String words[] = text.split("\\s");

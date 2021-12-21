@@ -1,5 +1,6 @@
 package pl.put.poznan.transformer.logic.text.shortcuts;
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 import java.util.regex.Pattern;
@@ -30,7 +31,7 @@ public class ToShortcut extends TextTransformer {
     }
 
     @Override
-    public String transform() {
+    public String transform() throws DomainException {
         return shorten(text.transform());
     }
 
@@ -47,7 +48,7 @@ public class ToShortcut extends TextTransformer {
         Matcher matcher;
         String match, shortcut;
         for(int i = 0; i < pairs.length; i++) {
-            pattern = Pattern.compile(pairs[i][0], Pattern.CASE_INSENSITIVE);
+            pattern = Pattern.compile(pairs[i][0], Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
             matcher = pattern.matcher(workingText);
             shortenedText = "";
 
@@ -68,8 +69,9 @@ public class ToShortcut extends TextTransformer {
                 index = matcher.end();
 
                 // usuwanie podwójnych kropek
-                if(pairs[i][1].charAt(pairs[i][1].length() - 1) == '.' &&
-                        workingText.charAt(matcher.end()) == '.') {
+                if(workingText.length() > index &&
+                        pairs[i][1].charAt(pairs[i][1].length() - 1) == '.' &&
+                        workingText.charAt(index) == '.') {
                     index += 1;
                 };
             }
