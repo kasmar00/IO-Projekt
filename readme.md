@@ -1,5 +1,5 @@
 # Inżynieria Oprogramowania - Projekt
-Projekt z laboratorium Inżynieria Oprogramowania
+Projekt z laboratorium Inżynieria Oprogramowania - Text Transformer
 
 ## Autorzy:
 - Patryk Hubicki
