@@ -17,12 +17,12 @@ public class FromShortcut extends TextTransformer{
             {"i tak dalej", "itd."},
             {"et cetera", "etc."},
             {"to znaczy", "tzn."},
-            {"tak zwan.", "tzw."},
+            {"tak zwane", "tzw."},
             {"między innymi", "m.in."},
             {"na temat", "nt."},
             {"jak wyżej", "jw."},
             {"profesor", "prof."},
-            {"doktor", "dr."}
+            {"doktor", "dr"}
     };
 
 
@@ -35,12 +35,29 @@ public class FromShortcut extends TextTransformer{
         return expand(text.transform());
     }
 
+    private String[] capitalizeExpansion(String[] splitedText, String match){
+        int counter=0;
+        for(int j = 0; j < match.length() - 1; j++){
+            if(match.charAt(j) == '.') continue;
+            else{
+                if(Character.isUpperCase(match.codePointAt(j)) && counter<splitedText.length){
+                    Text capitalize = new CapitalizeText(new TextImpl(splitedText[counter]));
+                    splitedText[counter]=capitalize.transform();
+                }
+            }
+            counter+=1;
+        }
+        return splitedText;
+    }
+
     /**
      * Turns words from shortcuts
      *
      * @param text holds the text
      * @return expanded text
      */
+
+
     private String expand(String text) {
         String expandedText = null;
         String workingText = text;
@@ -51,25 +68,13 @@ public class FromShortcut extends TextTransformer{
             pattern = Pattern.compile(pairs[i][1], Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(workingText);
             expandedText = "";
-
             int index = 0;
+            expansion = pairs[i][0];
             while(matcher.find()) {
                 match = workingText.substring(matcher.start(), matcher.end());
-                expansion = pairs[i][0];
                 String[] splitedText=expansion.split(" ");
-                int counter=0;
-                for(int j = 0; j < match.length() - 1; j++){
-                    if(match.charAt(j) == '.') continue;
-                    else{
-                        if(Character.isUpperCase(match.codePointAt(j)) && counter<splitedText.length){
-                            Text capitalize = new CapitalizeText(new TextImpl(splitedText[counter]));
-                            splitedText[counter]=capitalize.transform();
-                        }
-                    }
-                    counter+=1;
-                }
-                expansion=String.join(" ", splitedText);
-                expandedText += workingText.substring(index, matcher.start()) + expansion;
+                String joinedText=String.join(" ", capitalizeExpansion(splitedText, match));
+                expandedText += workingText.substring(index, matcher.start()) + joinedText;
                 index = matcher.end();
             }
             expandedText += workingText.substring(index);
