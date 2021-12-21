@@ -9,6 +9,7 @@ import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.exceptions.EmptyTextException;
 import pl.put.poznan.transformer.logic.exceptions.EmptyTransformationsException;
 import pl.put.poznan.transformer.logic.exceptions.NoTransformationException;
+import pl.put.poznan.transformer.logic.exceptions.NumberConvertingException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -16,5 +17,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {NoTransformationException.class, EmptyTextException.class, EmptyTransformationsException.class})
     protected ResponseEntity<Object> handleException(DomainException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(value = {NumberConvertingException.class})
+    protected ResponseEntity<Object> handleNumberConvertingException(DomainException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

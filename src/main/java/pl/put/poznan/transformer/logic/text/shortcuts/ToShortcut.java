@@ -1,5 +1,6 @@
 package pl.put.poznan.transformer.logic.text.shortcuts;
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 import java.util.regex.Pattern;
@@ -30,7 +31,7 @@ public class ToShortcut extends TextTransformer {
     }
 
     @Override
-    public String transform() {
+    public String transform() throws DomainException {
         return shorten(text.transform());
     }
 

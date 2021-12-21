@@ -6,6 +6,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.stereotype.Service;
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.exceptions.NoTransformationException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextImpl;
@@ -32,7 +33,7 @@ public class TextTransformerService {
      * @param transformations List of transformations to be applied
      * @return transformed text
      */
-    public String getTranformedText(String text, String[] transformations) throws NoTransformationException {
+    public String getTranformedText(String text, String[] transformations) throws DomainException {
         Text decorated = new TextImpl(text);
 
         for (String transformationName : transformations) {

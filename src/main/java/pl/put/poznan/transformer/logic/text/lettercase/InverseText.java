@@ -1,6 +1,7 @@
 package pl.put.poznan.transformer.logic.text.lettercase;
 
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 import java.lang.Character;
@@ -19,7 +20,7 @@ public class InverseText extends TextTransformer {
     public static String name = "inverse";
 
     @Override
-    public String transform(){
+    public String transform() throws DomainException {
         return getInverse(text.transform());
     }
 
