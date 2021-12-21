@@ -68,8 +68,9 @@ public class ToShortcut extends TextTransformer {
                 index = matcher.end();
 
                 // usuwanie podwójnych kropek
-                if(pairs[i][1].charAt(pairs[i][1].length() - 1) == '.' &&
-                        workingText.charAt(matcher.end()) == '.') {
+                if(workingText.length() > index &&
+                        pairs[i][1].charAt(pairs[i][1].length() - 1) == '.' &&
+                        workingText.charAt(index) == '.') {
                     index += 1;
                 };
             }
