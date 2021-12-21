@@ -1,6 +1,5 @@
 package pl.put.poznan.transformer.logic.text.numbers;
 
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -9,11 +8,18 @@ import org.slf4j.LoggerFactory;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Expand numbers to text
@@ -37,7 +43,7 @@ public class NumberExpandText extends TextTransformer {
         ArrayList<String> matches = matchPattern(text);
 
         try {
-            ArrayList<String> converted = convertNumberToText(matches);
+            ArrayList<String> converted = this.convertNumberToText(matches);
             return replaceNumbers(text, converted);
         } catch (IOException | ParseException e) {
             logger.warn("Can't expand number:", e);
@@ -62,6 +68,17 @@ public class NumberExpandText extends TextTransformer {
         return matches;
     }
 
+    private Map<String, List<String>> getNameDictionary() throws ParseException {
+        InputStream inputStream = this.getClass().getResourceAsStream("/NumberToText.json");
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Stream<String> lines = bufferedReader.lines();
+
+        return (Map<String, List<String>>) new JSONParser().parse(
+                lines.collect(Collectors.joining(""))
+        );
+    }
+
     /**
      * Converts numbers to text
      *
@@ -70,10 +87,9 @@ public class NumberExpandText extends TextTransformer {
      * @throws IOException    on problems with opening a file
      * @throws ParseException on problems parsing a JSON
      */
-    public static ArrayList<String> convertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
+    public ArrayList<String> convertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
         ArrayList<String> converted = new ArrayList<>();
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(
-                new FileReader("src/main/resources/NumberToText.json"));
+        Map<String, List<String>> jsonObject = getNameDictionary();
 
         int lenbeforedot, lenafterdot;
         for (String match : matches) {
@@ -126,9 +142,78 @@ public class NumberExpandText extends TextTransformer {
                     }
                 }
             }
-            converted.add(result.toString().trim());
+            String convertedNumber = result.toString().trim();
+            if (lenafterdot > 0) {
+                String decimalPart = convertDecimalPart(match, jsonObject);
+                convertedNumber += " i " + decimalPart.trim();
+            }
+            converted.add(convertedNumber);
         }
         return converted;
+    }
+
+
+    private static int extensionSelector(int value) {
+        if (value == 1) {
+            return 0;
+        } else if (value <= 4) {
+            return 1;
+        } else if (value <= 20) {
+            return 2;
+        } else if (Arrays.asList(2, 3, 4).contains(value % 10)) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    private static String convertDecimalPart(String decimalPartInput, Map<String, List<String>> dictionary) {
+        int splitIndex = decimalPartInput.indexOf(".");
+        int decimalPart = (int) (Double.parseDouble(decimalPartInput.substring(splitIndex)) * 100);
+
+        if (decimalPart == 0) {
+            return "";
+        } else if (decimalPart % 10 == 0) {
+            int value = decimalPart / 10;
+            String name = dictionary.get("places").get(value);
+            String extension = dictionary.get("decimal").get(extensionSelector(value));
+            return name + " " + extension;
+        } else {
+            String name = getHundredthPart(decimalPart, dictionary);
+            String extension = dictionary.get("hundredth").get(extensionSelector(decimalPart));
+            return name + " " + extension;
+        }
+    }
+
+    private static String getHundredthPart(int value, Map<String, List<String>> dictionary) {
+//        todo: generalize this function
+        List<String> expandedText = new ArrayList<>();
+
+        {
+            int i = value / 10;
+            if (i >= 2) {
+                expandedText.add(dictionary.get("tens").get(i));
+                value -= i * 10;
+            }
+        }
+
+        {
+            int i = value - 10;
+            if (i >= 2) {
+                expandedText.add(dictionary.get("teens").get(i));
+                value -= i + 10;
+            }
+        }
+
+        {
+            int i = value;
+            if (i >= 1) {
+                expandedText.add(dictionary.get("places").get(i));
+                value -= i;
+            }
+        }
+
+        return String.join(" ", expandedText);
     }
 
     /**

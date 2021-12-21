@@ -73,18 +73,12 @@
   "decimal" : [
     "dziesiąta",
     "dziesiąte",
-    "dziesiętnych"
+    "dziesiątych"
   ],
 
   "hundredth" : [
     "setna",
     "setne",
     "setnych"
-  ],
-
-  "thousandth" : [
-    "tysięczna",
-    "tysiące",
-    "tysięcznych"
   ]
 }
