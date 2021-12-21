@@ -1,5 +1,6 @@
 package pl.put.poznan.transformer.logic.text.shortcuts;
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextImpl;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
@@ -31,11 +32,11 @@ public class FromShortcut extends TextTransformer{
     }
 
     @Override
-    public String transform() {
+    public String transform() throws DomainException {
         return expand(text.transform());
     }
 
-    private String[] capitalizeExpansion(String[] splitedText, String match){
+    private String[] capitalizeExpansion(String[] splitedText, String match) throws DomainException {
         int counter=0;
         for(int j = 0; j < match.length() - 1; j++){
             if(match.charAt(j) == '.') continue;
@@ -58,7 +59,7 @@ public class FromShortcut extends TextTransformer{
      */
 
 
-    private String expand(String text) {
+    private String expand(String text) throws DomainException {
         String expandedText = null;
         String workingText = text;
         Pattern pattern;

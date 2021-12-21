@@ -5,6 +5,8 @@ import org.json.simple.parser.ParseException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
+import pl.put.poznan.transformer.logic.exceptions.NumberConvertingException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 
@@ -53,7 +55,7 @@ public class NumberExpandText extends TextTransformer {
      * @return Text with expanded numbers to text
      */
     @Override
-    public String transform() {
+    public String transform() throws DomainException {
         return setNumberExpand(text.transform());
     }
 
@@ -65,7 +67,7 @@ public class NumberExpandText extends TextTransformer {
      * @param text Text to be transformed
      * @return Text with expanded numbers to text
      */
-    private String setNumberExpand(String text) {
+    private String setNumberExpand(String text) throws NumberConvertingException {
         ArrayList<String> matches = matchPattern(text);
 
         try {
@@ -73,7 +75,7 @@ public class NumberExpandText extends TextTransformer {
             return replaceNumbers(text, converted);
         } catch (IOException | ParseException e) {
             logger.warn("Can't expand number:", e);
-            return text;
+            throw new NumberConvertingException();
         }
     }
 

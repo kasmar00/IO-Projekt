@@ -1,5 +1,7 @@
 package pl.put.poznan.transformer.logic.text;
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
+
 /**
  * Text interface which handles transform method
  */
@@ -10,5 +12,5 @@ public interface Text {
      *
      * @return string with applied transformation
      */
-    String transform();
+    String transform() throws DomainException;
 }

@@ -1,5 +1,6 @@
 package pl.put.poznan.transformer.logic.text.lettercase;
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextTransformer;
 
@@ -14,7 +15,7 @@ public class LowerText extends TextTransformer {
     public static String name = "lower";
 
     @Override
-    public String transform(){
+    public String transform() throws DomainException {
         return setLower(text.transform());
     }
     /**

@@ -1,5 +1,8 @@
 package pl.put.poznan.transformer.logic.text;
 
+import pl.put.poznan.transformer.logic.exceptions.DomainException;
+import pl.put.poznan.transformer.logic.exceptions.NumberConvertingException;
+
 public class TextTransformer implements Text {
     protected Text text;
 
@@ -13,7 +16,7 @@ public class TextTransformer implements Text {
     }
 
     @Override
-    public String transform() {
+    public String transform() throws DomainException {
         return text.transform();
     }
 }
