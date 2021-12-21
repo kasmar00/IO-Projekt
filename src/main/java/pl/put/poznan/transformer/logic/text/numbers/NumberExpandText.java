@@ -22,23 +22,49 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Expand numbers to text
+ * Expands numbers to text class
+ * <p>
+ * Expands every number to text
  */
 public class NumberExpandText extends TextTransformer {
+
     private static final Logger logger = LoggerFactory.getLogger(NumberExpandText.class);
     private static final String regex = "[+-]?([0-9]+\\.?[0-9]*|\\.[0-9]+)";
 
+    /**
+     * Number expand text class constructor
+     * <p>
+     * Refers to inherited variable text from parent's class
+     *
+     * @param text Text to be transformed
+     */
     public NumberExpandText(Text text) {
         super(text);
     }
 
+    /**
+     * Keyword for expand numbers to text transformation
+     */
     public static String name = "expand";
 
+    /**
+     * Makes expand number to text transformation
+     *
+     * @return Text with expanded numbers to text
+     */
     @Override
     public String transform() {
         return setNumberExpand(text.transform());
     }
 
+    /**
+     * Sets expand number to text transformation
+     * <p>
+     * Matches numbers in given text, converts numbers to text and replaces them in text
+     *
+     * @param text Text to be transformed
+     * @return Text with expanded numbers to text
+     */
     private String setNumberExpand(String text) {
         ArrayList<String> matches = matchPattern(text);
 
@@ -54,8 +80,8 @@ public class NumberExpandText extends TextTransformer {
     /**
      * Matches pattern in given text
      *
-     * @param text given text
-     * @return all pattern matches in list
+     * @param text  Text to be searched with pattern
+     * @return      All pattern matches in list
      */
     public static ArrayList<String> matchPattern(String text) {
         Pattern pattern = Pattern.compile(regex);
@@ -80,12 +106,14 @@ public class NumberExpandText extends TextTransformer {
     }
 
     /**
-     * Converts numbers to text
+     * Converts every searched number to text
+     * <p>
+     * Calculates number of digits and replaces digits with text using JSON file
      *
-     * @param matches is a given list with numbers as strings
-     * @return list of numbers converted to text
-     * @throws IOException    on problems with opening a file
-     * @throws ParseException on problems parsing a JSON
+     * @param matches Given list with numbers as strings
+     * @return List of numbers converted to text
+     * @throws IOException    On problems with opening a file
+     * @throws ParseException On problems parsing a JSON
      */
     public ArrayList<String> convertNumberToText(ArrayList<String> matches) throws IOException, ParseException {
         ArrayList<String> converted = new ArrayList<>();
@@ -114,7 +142,7 @@ public class NumberExpandText extends TextTransformer {
                     if (number != 0) {                                      // 1-9
                         numbers = (ArrayList<String>) jsonObject.get("ones");
                         result.append(numbers.get(number)).append(" ");
-                    } else if (lenbeforedot == 1) {                           // 0
+                    } else if (lenbeforedot == 1) {                         // 0
                         result.append("zero ");
                         break;
                     }
@@ -125,7 +153,7 @@ public class NumberExpandText extends TextTransformer {
                         number = match.charAt(place + 1) - '0';
                         result.append(numbers.get(number)).append(" ");
                         break;
-                    } else if (number != 0) {                                 // 20-99
+                    } else if (number != 0) {                               // 20-99
                         numbers = (ArrayList<String>) jsonObject.get("tens");
                         result.append(numbers.get(number)).append(" ");
                     }
@@ -217,11 +245,11 @@ public class NumberExpandText extends TextTransformer {
     }
 
     /**
-     * Replace numbers to strings
+     * Replaces numbers to strings in text
      *
-     * @param text      given text
-     * @param converted list of numbers converted to text
-     * @return text with converted numbers
+     * @param text      Text to be transformed
+     * @param converted List of numbers converted to text
+     * @return Text with converted numbers
      */
     public static String replaceNumbers(String text, ArrayList<String> converted) {
         String replaced = text.replaceAll(regex, "\0");
