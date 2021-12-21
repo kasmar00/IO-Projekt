@@ -47,7 +47,7 @@ public class ToShortcut extends TextTransformer {
         Matcher matcher;
         String match, shortcut;
         for(int i = 0; i < pairs.length; i++) {
-            pattern = Pattern.compile(pairs[i][0], Pattern.CASE_INSENSITIVE);
+            pattern = Pattern.compile(pairs[i][0], Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
             matcher = pattern.matcher(workingText);
             shortenedText = "";
 
