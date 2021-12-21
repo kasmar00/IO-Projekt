@@ -37,19 +37,28 @@ public class InverseText extends TextTransformer {
 
         for (left = 0; left < right; left++, right--) {
             if(Character.isUpperCase(tempArray[left])){
-                char temp = Character.toLowerCase(tempArray[left]);
-                tempArray[left] = Character.toUpperCase(tempArray[right]);;
-                tempArray[right] = temp;
-            }
-            else if(Character.isUpperCase(tempArray[right])){
-                char temp = Character.toUpperCase(tempArray[left]);
-                tempArray[left] = Character.toLowerCase(tempArray[right]);
-                tempArray[right] = temp;
+                if(Character.isUpperCase(tempArray[right])){
+                    char temp = tempArray[left];
+                    tempArray[left] = tempArray[right];;
+                    tempArray[right] = temp;
+                }
+                else {
+                    char temp = Character.toLowerCase(tempArray[left]);
+                    tempArray[left] = Character.toUpperCase(tempArray[right]);;
+                    tempArray[right] = temp;
+                }
             }
             else {
-                char temp = tempArray[left];
-                tempArray[left] = tempArray[right];
-                tempArray[right] = temp;
+                if(Character.isUpperCase(tempArray[right])){
+                    char temp = Character.toUpperCase(tempArray[left]);
+                    tempArray[left] = Character.toLowerCase(tempArray[right]);;
+                    tempArray[right] = temp;
+                }
+                else {
+                    char temp = tempArray[left];
+                    tempArray[left] = tempArray[right];;
+                    tempArray[right] = temp;
+                }
             }
         }
         return new String(tempArray);
