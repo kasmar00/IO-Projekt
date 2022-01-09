@@ -1,5 +1,3 @@
-params = {};
-
 // lista transformacji
 const transformationsList = document.querySelector("#transformations");
 // przycisk submit
@@ -7,19 +5,31 @@ const submitButton = document.querySelector("#submit");
 // message to be transformed
 const message = document.querySelector("#message");
 
-// lista aktywnych operacji
-const operations = [];
+// payload do api
+const payload = {
+  text: "",
+  transformations: [],
+};
 
-message.addEventListener(
-  "change",
-  () => {
-    console.log(message.value);
-  },
-  false
-);
+// wynik
+const result = document.getElementById("transformed");
+
+message.addEventListener("change", (event) => {
+  payload.text = event.target.value;
+});
 
 submitButton.addEventListener("click", () => {
-  console.log("aaaaaa");
+  fetch("/api/transform", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      result.value = data.text;
+    });
 });
 
 const addOptionToList = (operation) => {
@@ -36,11 +46,11 @@ const addOptionToList = (operation) => {
       `${e.target.id} is ${e.target.checked} operation is ${operation}`
     );
     if (e.target.checked) {
-      operations.push(operation);
+      payload.transformations.push(operation);
     } else {
-      const index = operations.indexOf(operation);
+      const index = payload.transformations.indexOf(operation);
       if (index > -1) {
-        operations.splice(index, 1);
+        payload.transformations.splice(index, 1);
       }
     }
   });

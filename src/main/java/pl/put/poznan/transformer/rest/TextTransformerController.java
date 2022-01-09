@@ -17,7 +17,7 @@ import java.util.Arrays;
  * Rest controller class to text transformations
  */
 @RestController
-@RequestMapping("/transform")
+@RequestMapping("/api/transform")
 public class TextTransformerController {
 
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
