@@ -10,6 +10,8 @@ import pl.put.poznan.transformer.logic.exceptions.EmptyTransformationsException;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Text transformer controller class
@@ -60,5 +62,16 @@ public class TextTransformerController {
         String transformedText = textTransformerService.getTranformedText(text, transforms);
 
         return new Response(transformedText);
+    }
+
+    /**
+     * Endpoint with available transformations
+     *
+     * @return Set of available transformations
+     */
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    public Set<String> availableTransformations() {
+        logger.debug("Received request for options");
+        return textTransformerService.getAvailableTransformationsNames();
     }
 }

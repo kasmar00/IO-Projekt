@@ -21,7 +21,7 @@ import java.util.Set;
 public class TextTransformerService {
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerService.class);
 
-    private final HashMap<String, Class<TextTransformer>> availableTransformations = getAvailableTransformations();
+    private final HashMap<String, Class<TextTransformer>> availableTransformations = fetchAvailableTransformations();
 
     /**
      * Transform text using transformations
@@ -59,7 +59,7 @@ public class TextTransformerService {
      *
      * @return Hashmap of available transformations names to classes
      **/
-    private HashMap<String, Class<TextTransformer>> getAvailableTransformations() {
+    private HashMap<String, Class<TextTransformer>> fetchAvailableTransformations() {
         HashMap<String, Class<TextTransformer>> transformations = new HashMap<>();
 
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
@@ -77,5 +77,9 @@ public class TextTransformerService {
 
         logger.info("Available transformations are: " + transformations);
         return transformations;
+    }
+
+    public Set<String> getAvailableTransformationsNames() {
+        return availableTransformations.keySet();
     }
 }
