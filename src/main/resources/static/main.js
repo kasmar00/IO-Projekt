@@ -57,14 +57,14 @@ const addOptionToList = (operation) => {
   transformationsList.appendChild(div);
 };
 
-// this should be replaced by fetching from backend
-[
-  "noop",
-  "inverse",
-  "expand",
-  "to shortcuts",
-  "from shortcuts",
-  "lower",
-  "upper",
-  "capitalize",
-].forEach((v) => addOptionToList(v));
+const fetchAvailableTransforms = () => {
+  fetch("api/transform", {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      data.forEach((v) => addOptionToList(v));
+    });
+};
+
+fetchAvailableTransforms();
