@@ -7,10 +7,15 @@ import pl.put.poznan.transformer.logic.text.TextTransformer;
 
 /**
  * Capitalize text class
- * <p>
- * Capitalizes text
  */
 public class CapitalizeText extends TextTransformer {
+    /**
+     * Capitalize text class constructor
+     * <p>
+     * Refers to inherited variable text from parent's class
+     *
+     * @param text Text to be transformed
+     */
     public CapitalizeText(Text text){
         super(text);
     }
@@ -24,6 +29,7 @@ public class CapitalizeText extends TextTransformer {
      * Makes capitalize to text transformation
      *
      * @return Text capitalized
+     * @throws DomainException Main exception thrown during app running
      */
     @Override
     public String transform() throws DomainException {

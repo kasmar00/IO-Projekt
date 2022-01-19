@@ -31,6 +31,7 @@ public class DuplicateRemoveText extends TextTransformer {
      * Removes duplicates from the given text
      *
      * @return Text with removed duplicates
+     * @throws DomainException Main exception thrown during app running
      */
     @Override
     public String transform() throws DomainException {
