@@ -2,14 +2,6 @@ package pl.put.poznan.transformer.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pl.put.poznan.transformer.logic.exceptions.DomainException;
-import pl.put.poznan.transformer.logic.text.Text;
-import pl.put.poznan.transformer.logic.text.TextImpl;
-import pl.put.poznan.transformer.logic.text.lettercase.CapitalizeText;
-import pl.put.poznan.transformer.logic.text.lettercase.InverseText;
-import pl.put.poznan.transformer.logic.text.lettercase.UpperText;
-import pl.put.poznan.transformer.logic.text.numbers.NumberExpandText;
-import pl.put.poznan.transformer.logic.text.shortcuts.FromShortcut;
 
 /**
  * Text transformer application class
@@ -26,7 +18,7 @@ public class TextTransformerApplication {
      *
      * @param args List of arguments to be used by spring application
      */
-    public static void main(String[] args) throws DomainException {
+    public static void main(String[] args) {
         SpringApplication.run(TextTransformerApplication.class, args);
     }
 }

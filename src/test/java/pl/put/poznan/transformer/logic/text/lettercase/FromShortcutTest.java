@@ -6,7 +6,7 @@ import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextImpl;
 import pl.put.poznan.transformer.logic.text.shortcuts.FromShortcut;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FromShortcutTest {
     Text text;
