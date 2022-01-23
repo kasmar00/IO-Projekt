@@ -27,9 +27,6 @@ public class TextTransformerApplication {
      * @param args List of arguments to be used by spring application
      */
     public static void main(String[] args) throws DomainException {
-        Text test = new InverseText (new CapitalizeText (new FromShortcut(new  NumberExpandText(new UpperText(new TextImpl("Cześć, to testowy tekst nr 654.43 i ciekawe czy wyjdzie np. ;)"))))));
-        System.out.println(test.transform());
-
         SpringApplication.run(TextTransformerApplication.class, args);
     }
 }

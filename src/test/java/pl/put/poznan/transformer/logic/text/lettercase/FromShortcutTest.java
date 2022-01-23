@@ -1,14 +1,14 @@
-package pl.put.poznan.transformer.logic.text.shortcuts;
+package pl.put.poznan.transformer.logic.text.lettercase;
 
 import org.junit.jupiter.api.Test;
 import pl.put.poznan.transformer.logic.exceptions.DomainException;
 import pl.put.poznan.transformer.logic.text.Text;
 import pl.put.poznan.transformer.logic.text.TextImpl;
+import pl.put.poznan.transformer.logic.text.shortcuts.FromShortcut;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FromShortcutTest {
-    FromShortcut fromShortcut;
     Text text;
 
     @Test
@@ -19,7 +19,7 @@ class FromShortcutTest {
     }
 
     @Test
-    public void testFirstIsLowerCase() throws DomainException {
+    public void testFirstIsUpperCase() throws DomainException {
         text = new FromShortcut(new TextImpl("Np."));
         assertEquals("Na przykład", text.transform());
 
