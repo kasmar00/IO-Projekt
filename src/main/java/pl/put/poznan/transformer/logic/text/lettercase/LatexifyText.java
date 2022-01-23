@@ -10,6 +10,13 @@ import pl.put.poznan.transformer.logic.text.TextTransformer;
  * Turns text into text with latex syntax
  */
 public class LatexifyText extends TextTransformer {
+    /**
+     * Latexify text class constructor
+     * <p>
+     * Refers to inherited variable text from parent's class
+     *
+     * @param text Text to be transformed
+     */
     public LatexifyText(Text text) {super(text);}
 
     /**
@@ -21,6 +28,7 @@ public class LatexifyText extends TextTransformer {
      * Makes latex syntax to text transformation
      *
      * @return Text with latex syntax
+     * @throws DomainException Main exception thrown during app running
      */
     @Override
     public String transform() throws DomainException {

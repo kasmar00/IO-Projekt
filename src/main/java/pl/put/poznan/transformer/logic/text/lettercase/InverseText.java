@@ -10,15 +10,31 @@ import java.lang.String;
 
 
 /**
- * Inverse text
+ * Inverse text class
  */
 public class InverseText extends TextTransformer {
+    /**
+     * Inverse text class constructor
+     * <p>
+     * Refers to inherited variable text from parent's class
+     *
+     * @param text Text to be transformed
+     */
     public InverseText(Text text){
         super(text);
     }
 
+    /**
+     * Keyword for inverse text transformation
+     */
     public static String name = "inverse";
 
+    /**
+     * Makes inverse to text transformation
+     *
+     * @return Text inversed
+     * @throws DomainException Main exception thrown during app running
+     */
     @Override
     public String transform() throws DomainException {
         return getInverse(text.transform());
@@ -27,8 +43,8 @@ public class InverseText extends TextTransformer {
     /**
      * Reverse given text
      *
-     * @param text holds the text
-     * @return reversed text
+     * @param text Holds the text
+     * @return Reversed text
      */
     private String getInverse(String text){
         char[] tempArray = text.toCharArray();
@@ -39,24 +55,24 @@ public class InverseText extends TextTransformer {
             if(Character.isUpperCase(tempArray[left])){
                 if(Character.isUpperCase(tempArray[right])){
                     char temp = tempArray[left];
-                    tempArray[left] = tempArray[right];;
+                    tempArray[left] = tempArray[right];
                     tempArray[right] = temp;
                 }
                 else {
                     char temp = Character.toLowerCase(tempArray[left]);
-                    tempArray[left] = Character.toUpperCase(tempArray[right]);;
+                    tempArray[left] = Character.toUpperCase(tempArray[right]);
                     tempArray[right] = temp;
                 }
             }
             else {
                 if(Character.isUpperCase(tempArray[right])){
                     char temp = Character.toUpperCase(tempArray[left]);
-                    tempArray[left] = Character.toLowerCase(tempArray[right]);;
+                    tempArray[left] = Character.toLowerCase(tempArray[right]);
                     tempArray[right] = temp;
                 }
                 else {
                     char temp = tempArray[left];
-                    tempArray[left] = tempArray[right];;
+                    tempArray[left] = tempArray[right];
                     tempArray[right] = temp;
                 }
             }

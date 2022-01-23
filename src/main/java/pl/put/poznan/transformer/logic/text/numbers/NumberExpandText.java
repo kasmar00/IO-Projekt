@@ -53,6 +53,7 @@ public class NumberExpandText extends TextTransformer {
      * Makes expand number to text transformation
      *
      * @return Text with expanded numbers to text
+     * @throws DomainException Main exception thrown during app running
      */
     @Override
     public String transform() throws DomainException {
