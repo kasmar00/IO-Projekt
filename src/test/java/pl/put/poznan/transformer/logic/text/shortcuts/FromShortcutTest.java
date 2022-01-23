@@ -1,4 +1,4 @@
-package pl.put.poznan.transformer.logic.text.lettercase;
+package pl.put.poznan.transformer.logic.text.shortcuts;
 
 import org.junit.jupiter.api.Test;
 import pl.put.poznan.transformer.logic.exceptions.DomainException;
